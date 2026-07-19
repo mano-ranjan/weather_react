@@ -1,16 +1,19 @@
 import { useState } from "react";
 import { useWeather } from "../hooks/useWeather";
+import CurrentWeather from "../components/weather/CurrentWeather";
+import SearchBar from "../components/weather/SearchBar";
+import WeatherDetails from "../components/weather/WeatherDetails";
 
 function HomePage() {
     const [locationInput, setLocationInput] = useState("");
 
-    const { weather, isLoading, error, getWeather } = useWeather();
+    const weatherState = useWeather();
 
     const handleSearch = (e: React.FormEvent) => {
         e.preventDefault();
 
         if (locationInput.trim()) {
-            getWeather(locationInput.trim());
+            weatherState.getWeather(locationInput.trim());
         }
     };
 
@@ -21,46 +24,25 @@ function HomePage() {
                     Weather App
                 </h1>
 
-                <form
-                    onSubmit={handleSearch}
-                    className="mb-8 flex gap-4"
-                >
-                    <input
-                        className="flex-1 rounded-lg border p-3"
-                        type="text"
-                        placeholder="Search city..."
-                        value={locationInput}
-                        onChange={(e) => setLocationInput(e.target.value)}
-                    />
+                <SearchBar
+                    value={locationInput}
+                    isLoading={weatherState.isLoading}
+                    onChange={setLocationInput}
+                    onSearch={handleSearch}
+                />
 
-                    <button
-                        className="rounded-lg bg-blue-600 px-6 text-white"
-                        disabled={isLoading}
-                    >
-                        {isLoading ? "Loading..." : "Search"}
-                    </button>
-                </form>
-
-                {error && (
+                {weatherState.error && (
                     <p className="mb-4 text-red-600">
-                        {error}
+                        {weatherState.error}
                     </p>
                 )}
 
-                {weather && (
-                    <div className="rounded-xl bg-white p-6 shadow">
-                        <h2 className="text-3xl font-semibold">
-                            {weather.resolvedAddress}
-                        </h2>
+                {weatherState.weather && (
+                    <>
+                        <CurrentWeather weather={weatherState.weather} />
 
-                        <p className="mt-2 text-xl">
-                            {weather.currentConditions.temp}°C
-                        </p>
-
-                        <p>
-                            {weather.currentConditions.conditions}
-                        </p>
-                    </div>
+                        <WeatherDetails weather={weatherState.weather} />
+                    </>
                 )}
             </div>
         </div>
