@@ -1,3 +1,10 @@
+export interface CurrentConditions {
+    temp: number;
+    conditions: string;
+    windspeed: number;
+    precipprob: number;
+}
+
 export interface HourData {
     datetime: string;
     temp: number;
@@ -16,10 +23,5 @@ export interface DayData {
 export interface WeatherResponse {
     resolvedAddress: string;
     days: DayData[];
-    currentConditions: {
-        temp: number;
-        conditions: string;
-        windspeed: number;
-        precipprob: number;
-    }
+    currentConditions: CurrentConditions;
 }

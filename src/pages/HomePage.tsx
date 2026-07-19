@@ -3,6 +3,8 @@ import { useWeather } from "../hooks/useWeather";
 import CurrentWeather from "../components/weather/CurrentWeather";
 import SearchBar from "../components/weather/SearchBar";
 import WeatherDetails from "../components/weather/WeatherDetails";
+import HourlyForecast from "../components/weather/HourlyForecast/HourlyForecast";
+import DailyForecast from "../components/weather/DailyForecast/DailyForecast";
 
 function HomePage() {
     const [locationInput, setLocationInput] = useState("");
@@ -42,6 +44,14 @@ function HomePage() {
                         <CurrentWeather weather={weatherState.weather} />
 
                         <WeatherDetails weather={weatherState.weather} />
+
+                        <HourlyForecast
+                            day={weatherState.weather.days[0]}
+                        />
+
+                        <DailyForecast
+                            days={weatherState.weather.days}
+                        />
                     </>
                 )}
             </div>
